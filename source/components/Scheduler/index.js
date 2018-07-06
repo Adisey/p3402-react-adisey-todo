@@ -114,6 +114,10 @@ export default class Scheduler extends Component {
 
     };
 
+    _updateTask = () => {
+
+    };
+
     _completeAllTasksAsync = async () => {
         // Фековая функция исключительно для тестов, логика предусматривает другой алгоритм перевода
         // всех задач в статус выполнено ;)
@@ -140,16 +144,12 @@ export default class Scheduler extends Component {
 
 
         return (
-            <div>
-                <div>
-                    <Checkbox
-                        checked = { completeAll }
-                        color1 = { '#3B8EF3' }
-                        color2 = { '#FFF' }
-                        onClick = { this._runCompleteAll }
-                    />
-                </div>
-            </div>
+            <Checkbox
+                checked = { completeAll }
+                color1 = { '#363636' }
+                color2 = { '#fff' }
+                onClick = { this._runCompleteAll }
+            />
         );
     };
 

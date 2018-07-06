@@ -35,9 +35,9 @@ export default class Task extends PureComponent {
         return (
             <Checkbox
                 checked = { completed }
-                className = { Styles._toggleTaskCompletedState }
-                color1 = { '#3B8EF3' }
-                color2 = { '#FFF' }
+                className = { Styles.toggleTaskCompletedState }
+                color1 = { '#363636' }
+                color2 = { '#fff' }
                 onClick = { this._completeTask }
             />
         );
@@ -61,7 +61,6 @@ export default class Task extends PureComponent {
                 className = { Styles.toggleTaskFavoriteState }
                 color1 = { '#3B8EF3' }
                 color2 = { '#000' }
-                hover = { false }
                 inlineBlock
                 onClick = { this._favoriteTask }
             />
@@ -129,7 +128,6 @@ export default class Task extends PureComponent {
         } = this.props;
 
         return (
-            <div className = { Styles.toggleTaskCompletedState }>
                 <input
                     defaultValue = { message }
                     disabled = { !edited }
@@ -138,7 +136,6 @@ export default class Task extends PureComponent {
                     type = 'text'
                     onKeyDown = { this._updateTaskMessageOnKeyDown }
                 />
-            </div>
         );
     };
 
