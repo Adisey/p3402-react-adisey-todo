@@ -1,12 +1,12 @@
 // Core
 import React, { Component } from 'react';
-
+import FlipMove from 'react-flip-move';
 // Instruments
 import Styles from './styles.m.css';
 import { api } from '../../REST/api';
 import Spinner from '../Spinner';
-// import Task from '../Task';
-// import Checkbox from '../../theme/assets/Checkbox';
+import Task from '../Task';
+import Checkbox from '../../theme/assets/Checkbox';
 
 export default class Scheduler extends Component {
     state = {
@@ -133,26 +133,100 @@ export default class Scheduler extends Component {
         }
     };
 
+    _getCompleteAll = () => {
+        const {
+            completeAll,
+        } = this.state;
+
+
+        return (
+            <div>
+                <div>
+                    <Checkbox
+                        checked = { completeAll }
+                        color1 = { '#3B8EF3' }
+                        color2 = { '#FFF' }
+                        onClick = { this._runCompleteAll }
+                    />
+                </div>
+            </div>
+        );
+    };
+
+    _getFilterInput = () => {
+        const { tasksFilter } = this.props;
+
+        return (
+            <input
+                placeholder = 'Поиск'
+                type = 'search'
+                value = { tasksFilter }
+                onChange = { this._updateTasksFilter }
+            />
+        );
+    };
+    _getNewTaskInput = () => {
+        const { newTaskMessage } = this.props;
+
+        return (
+            <form onSubmit = { this._createTaskAsync }>
+                <input
+                    className = 'createTask'
+                    maxLength = { 50 }
+                    placeholder = 'Описaние моей новой задачи'
+                    type = 'text'
+                    value = { newTaskMessage }
+                    onChange = { this._updateNewTaskMessage }
+                    onKeyPress = { this._keyPressNewTaskMessage }
+                />
+                <button>Добавить задачу</button>
+            </form>);
+    };
+    _getTasks = () => {
+        const { tasks, tasksFilter } = this.state;
+        // const { tasks } = this.props;
+
+        return (
+            tasks.
+                filter((task) => task.message.toUpperCase().indexOf(tasksFilter.toUpperCase())+1).
+                map((task) => (
+                    <Task
+                        key = { task.id }
+                        { ...task }
+                    />
+                ))
+        );
+    };
+
     render () {
-        const { isTasksFetching, newTaskMessage, tasksFilter, tasks } = this.state;
+        // const { isTasksFetching, newTaskMessage, tasksFilter, tasks } = this.state;
+        const FilterInput = this._getFilterInput();
+        const NewTaskInput = this._getNewTaskInput();
+        const Tasks = this._getTasks();
+        const CompleteAll = this._getCompleteAll();
+
 
         return (
             <section className = { Styles.scheduler }>
                 <main>
                     <Spinner
-                        isTasksFetching = { isTasksFetching }
+                        isSpinning
                     />
                     <header>
                         <h1 className = 'test'>Планировщик задач</h1>
+                        {FilterInput}
                     </header>
                     <section>
-                        <div>
-                            <ul />
+                        {NewTaskInput}
+                        <div className = 'overlay' >
+                            <ul><FlipMove>{Tasks}</FlipMove></ul>
                         </div>
 
                     </section>
-                    <footer />
-
+                    <footer>
+                        {CompleteAll}
+                        <span className = { Styles.completeAllTasks }>Все задачи выполнены</span>
+                    </footer>
                 </main>
             </section>
         );
